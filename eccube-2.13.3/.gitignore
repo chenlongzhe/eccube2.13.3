@@ -1,6 +1,6 @@
 #ec-cube
-data/install.php #2.4
-data/config/config.php #2.11~
+data/install.php
+data/config/config.php
 data/logs/*
 data/Smarty/templates_c/**/*
 data/cache/*
