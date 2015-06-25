@@ -1,0 +1,22 @@
+<?php
+define('ECCUBE_INSTALL', 'ON');
+define('HTTP_URL', 'http://test.u-floor.net/');
+define('HTTPS_URL', 'http://test.u-floor.net/');
+define('ROOT_URLPATH', '/');
+define('DOMAIN_NAME', 'test.u-floor.net');
+define('DB_TYPE', 'mysql');
+define('DB_USER', 'ec_user');
+define('DB_PASSWORD', 'BqU2KjzR');
+define('DB_SERVER', '127.0.0.1');
+define('DB_NAME', 'eccube_db');
+define('DB_PORT', '');
+define('ADMIN_DIR', 'a0718/');
+define('ADMIN_FORCE_SSL', FALSE);
+define('ADMIN_ALLOW_HOSTS', 'a:0:{}');
+define('AUTH_MAGIC', 'gostiocowaemikalaisaevubioniopunouaibouh');
+define('PASSWORD_HASH_ALGOS', 'sha256');
+define('MAIL_BACKEND', 'mail');
+define('SMTP_HOST', '');
+define('SMTP_PORT', '');
+define('SMTP_USER', '');
+define('SMTP_PASSWORD', '');
