@@ -300,7 +300,7 @@ __EOS__;
      * @param array $arrProducts 商品情報の配列
      * @return array 税込金額を設定した商品情報の配列
      */
-    function setPriceTaxTo($arrProducts) {
+    static function setPriceTaxTo($arrProducts) {
         foreach ($arrProducts as $key => $value) {
             $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
             $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
