@@ -29,7 +29,7 @@ $(function() {
 /**
  * 規格2のプルダウンを設定する.
  */
-function setClassCategories($form, product_id, $sele1, $sele2, selected_id2) {
+setClassCategories = function($form, product_id, $sele1, $sele2, selected_id2) {
     if ($sele1 && $sele1.length) {
         var classcat_id1 = $sele1.val() ? $sele1.val() : '';
         if ($sele2 && $sele2.length) {
@@ -39,56 +39,57 @@ function setClassCategories($form, product_id, $sele1, $sele2, selected_id2) {
             var classcat2;
 
             // 商品一覧時
-            if (typeof productsClassCategories != 'undefined') {
-                classcat2 = productsClassCategories[product_id][classcat_id1];
+            if (eccube.hasOwnProperty('productsClassCategories')) {
+                classcat2 = eccube.productsClassCategories[product_id][classcat_id1];
             }
             // 詳細表示時
             else {
-                classcat2 = classCategories[classcat_id1];
+                classcat2 = eccube.classCategories[classcat_id1];
             }
 
             // 規格2の要素を設定                      
             for (var key in classcat2) {
-                var id = classcat2[key]['classcategory_id2'];
-                var name = classcat2[key]['name'];
-                var option = $('<option />').val(id ? id : '').text(name);
-                if (id == selected_id2) {
-                    option.attr('selected', true);
+				if (classcat2.hasOwnProperty(key)) {
+	                var id = classcat2[key].classcategory_id2;
+	                var name = classcat2[key].name;
+	                var option = $('<option />').val(id ? id : '').text(name);
+	                if (id === selected_id2) {
+	                    option.attr('selected', true);
+	                }
+	                $sele2.append(option);
                 }
-                $sele2.append(option);
             }
             checkStock($form, product_id, $sele1.val() ? $sele1.val() : '__unselected2',
                        $sele2.val() ? $sele2.val() : '');
         }
     }
-}
+};
 
 /**
  * 規格の選択状態に応じて, フィールドを設定する.
  */
-function checkStock($form, product_id, classcat_id1, classcat_id2) {
+checkStock = function($form, product_id, classcat_id1, classcat_id2) {
 
     classcat_id2 = classcat_id2 ? classcat_id2 : '';
 
     var classcat2;
 
     // 商品一覧時
-    if (typeof productsClassCategories != 'undefined') {
-        classcat2 = productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
+    if (eccube.hasOwnProperty('productsClassCategories')) {
+        classcat2 = eccube.productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
     }
     // 詳細表示時
     else {
-        classcat2 = classCategories[classcat_id1]['#' + classcat_id2];
+        classcat2 = eccube.classCategories[classcat_id1]['#' + classcat_id2];
     }
 
     // 商品コード
     var $product_code_default = $form.find('[id^=product_code_default]');
     var $product_code_dynamic = $form.find('[id^=product_code_dynamic]');
-    if (classcat2
-        && typeof classcat2['product_code'] != 'undefined') {
+    if (classcat2 && typeof classcat2.product_code !== 'undefined') {
         $product_code_default.hide();
         $product_code_dynamic.show();
-        $product_code_dynamic.text(classcat2['product_code']);
+        $product_code_dynamic.text(classcat2.product_code);
     } else {
         $product_code_default.show();
         $product_code_dynamic.hide();
@@ -97,7 +98,7 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
     // 在庫(品切れ)
     var $cartbtn_default = $form.find('[id^=cartbtn_default]');
     var $cartbtn_dynamic = $form.find('[id^=cartbtn_dynamic]');
-    if (classcat2 && classcat2['stock_find'] === false) {
+    if (classcat2 && classcat2.stock_find === false) {
 
         $cartbtn_dynamic.text('申し訳ございませんが、只今品切れ中です。').show();
         $cartbtn_default.hide();
@@ -109,11 +110,9 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
     // 通常価格
     var $price01_default = $form.find('[id^=price01_default]');
     var $price01_dynamic = $form.find('[id^=price01_dynamic]');
-    if (classcat2
-        && typeof classcat2['price01'] != 'undefined'
-        && String(classcat2['price01']).length >= 1) {
+    if (classcat2 && typeof classcat2.price01 !== 'undefined' && String(classcat2.price01).length >= 1) {
 
-        $price01_dynamic.text(classcat2['price01']).show();
+        $price01_dynamic.text(classcat2.price01).show();
         $price01_default.hide();
     } else {
         $price01_dynamic.hide();
@@ -123,11 +122,9 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
     // 販売価格
     var $price02_default = $form.find('[id^=price02_default]');
     var $price02_dynamic = $form.find('[id^=price02_dynamic]');
-    if (classcat2
-        && typeof classcat2['price02'] != 'undefined'
-        && String(classcat2['price02']).length >= 1) {
+    if (classcat2 && typeof classcat2.price02 !== 'undefined' && String(classcat2.price02).length >= 1) {
 
-        $price02_dynamic.text(classcat2['price02']).show();
+        $price02_dynamic.text(classcat2.price02).show();
         $price02_default.hide();
     } else {
         $price02_dynamic.hide();
@@ -138,11 +135,9 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
     // セール価格
     var $price03_default = $form.find('[id^=price03_default]');
     var $price03_dynamic = $form.find('[id^=price03_dynamic]');
-    if (classcat2
-        && typeof classcat2['price03'] != 'undefined'
-        && String(classcat2['price03']).length >= 1) {
+    if (classcat2 && typeof classcat2.price03 !== 'undefined' && String(classcat2.price03).length >= 1) {
 
-        $price03_dynamic.text(classcat2['price03']).show();
+        $price03_dynamic.text(classcat2.price03).show();
         $price03_default.hide();
     } else {
         $price03_dynamic.hide();
@@ -153,11 +148,9 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
     // ポイント
     var $point_default = $form.find('[id^=point_default]');
     var $point_dynamic = $form.find('[id^=point_dynamic]');
-    if (classcat2
-        && typeof classcat2['point'] != 'undefined'
-        && String(classcat2['point']).length >= 1) {
+    if (classcat2 && typeof classcat2.point !== 'undefined' && String(classcat2.point).length >= 1) {
 
-        $point_dynamic.text(classcat2['point']).show();
+        $point_dynamic.text(classcat2.point).show();
         $point_default.hide();
     } else {
         $point_dynamic.hide();
@@ -166,12 +159,9 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
 
     // 商品規格
     var $product_class_id_dynamic = $form.find('[id^=product_class_id]');
-    if (classcat2
-        && typeof classcat2['product_class_id'] != 'undefined'
-        && String(classcat2['product_class_id']).length >= 1) {
-
-        $product_class_id_dynamic.val(classcat2['product_class_id']);
+    if (classcat2 && typeof classcat2.product_class_id !== 'undefined' && String(classcat2.product_class_id).length >= 1) {
+            $product_class_id_dynamic.val(classcat2.product_class_id);
     } else {
         $product_class_id_dynamic.val('');
     }
-}
+    };
