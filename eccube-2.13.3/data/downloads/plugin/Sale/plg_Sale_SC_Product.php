@@ -189,14 +189,21 @@ __EOS__;
                 }
 
                 // 価格
+//                $arrClassCats2['price01']
+//                    = strlen($arrProductsClass['price01'])
+//                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price01']))
+//                    : '';
                 $arrClassCats2['price01']
                     = strlen($arrProductsClass['price01'])
-                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price01']))
+                    ? number_format(SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProductsClass['price01'], $productId, $arrProductsClass['product_class_id']))
                     : '';
-
+//                $arrClassCats2['price02']
+//                    = strlen($arrProductsClass['price02'])
+//                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price02']))
+//                    : '';
                 $arrClassCats2['price02']
                     = strlen($arrProductsClass['price02'])
-                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price02']))
+                    ? number_format(SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProductsClass['price02'], $productId, $arrProductsClass['product_class_id']))
                     : '';
 
 /* CUORECUSTOM START */
@@ -206,8 +213,10 @@ __EOS__;
                     : '';
 
                 // ポイント
+//                $arrClassCats2['point']
+//                    = number_format(SC_Utils_Ex::sfPrePoint($arrProductsClass['price03'], $arrClassCats2['point_rate']));
                 $arrClassCats2['point']
-                    = number_format(SC_Utils_Ex::sfPrePoint($arrProductsClass['price03'], $arrClassCats2['point_rate']));
+                    = number_format(SC_Utils_Ex::sfPrePoint($arrProductsClass['price03'], $arrProductsClass['point_rate']));
 /* CUORECUSTOM END */
 
                 // 商品コード
@@ -301,34 +310,64 @@ __EOS__;
      * @return array 税込金額を設定した商品情報の配列
      */
     static function setPriceTaxTo($arrProducts) {
-        foreach ($arrProducts as $key => $value) {
-            $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
-/* CUORECUSTOM START */
-            $arrProducts[$key]['price03_min_format'] = number_format($arrProducts[$key]['price03_min']);
-            $arrProducts[$key]['price03_max_format'] = number_format($arrProducts[$key]['price03_max']);
-/* CUORECUSTOM END */
+//        foreach ($arrProducts as $key => $value) {
+//            $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
+//            $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
+//            $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
+//            $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
+///* CUORECUSTOM START */
+//            $arrProducts[$key]['price03_min_format'] = number_format($arrProducts[$key]['price03_min']);
+//            $arrProducts[$key]['price03_max_format'] = number_format($arrProducts[$key]['price03_max']);
+///* CUORECUSTOM END */
+//
+//            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_min']);
+//            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_max']);
+//            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_min']);
+//            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_max']);
+///* CUORECUSTOM START */
+//            $arrProducts[$key]['price03_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price03_min']);
+//            $arrProducts[$key]['price03_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price03_max']);
+///* CUORECUSTOM END */
+//
+//            $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
+//            $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
+//            $arrProducts[$key]['price02_min_tax_format'] = number_format($arrProducts[$key]['price02_min_tax']);
+//            $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
+///* CUORECUSTOM START */
+//            $arrProducts[$key]['price03_min_tax_format'] = number_format($arrProducts[$key]['price03_min_tax']);
+//            $arrProducts[$key]['price03_max_tax_format'] = number_format($arrProducts[$key]['price03_max_tax']);
+///* CUORECUSTOM END */
+//        }
+        
+        foreach ($arrProducts as &$arrProduct) {
+            $arrProduct['price01_min_format'] = number_format($arrProduct['price01_min']);
+            $arrProduct['price01_max_format'] = number_format($arrProduct['price01_max']);
+            $arrProduct['price02_min_format'] = number_format($arrProduct['price02_min']);
+            $arrProduct['price02_max_format'] = number_format($arrProduct['price02_max']);
+            $arrProduct['price03_min_format'] = number_format($arrProduct['price03_min']);
+            $arrProduct['price03_max_format'] = number_format($arrProduct['price03_max']);
 
-            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_max']);
-/* CUORECUSTOM START */
-            $arrProducts[$key]['price03_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price03_min']);
-            $arrProducts[$key]['price03_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price03_max']);
-/* CUORECUSTOM END */
+            SC_Product_Ex::setIncTaxToProduct($arrProduct);
 
-            $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
-            $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
-            $arrProducts[$key]['price02_min_tax_format'] = number_format($arrProducts[$key]['price02_min_tax']);
-            $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
-/* CUORECUSTOM START */
-            $arrProducts[$key]['price03_min_tax_format'] = number_format($arrProducts[$key]['price03_min_tax']);
-            $arrProducts[$key]['price03_max_tax_format'] = number_format($arrProducts[$key]['price03_max_tax']);
-/* CUORECUSTOM END */
+            $arrProduct['price01_min_inctax_format'] = number_format($arrProduct['price01_min_inctax']);
+            $arrProduct['price01_max_inctax_format'] = number_format($arrProduct['price01_max_inctax']);
+            $arrProduct['price02_min_inctax_format'] = number_format($arrProduct['price02_min_inctax']);
+            $arrProduct['price02_max_inctax_format'] = number_format($arrProduct['price02_max_inctax']);
+            $arrProduct['price03_min_inctax_format'] = number_format($arrProduct['price03_min_inctax']);
+            $arrProduct['price03_max_inctax_format'] = number_format($arrProduct['price03_max_inctax']);
+
+            // @deprecated 2.12.4
+            // 旧バージョン互換用
+            // 本来は、税額の代入で使用すべきキー名。
+            $arrProduct['price01_min_tax_format'] =& $arrProduct['price01_min_inctax_format'];
+            $arrProduct['price01_max_tax_format'] =& $arrProduct['price01_max_inctax_format'];
+            $arrProduct['price02_min_tax_format'] =& $arrProduct['price02_min_inctax_format'];
+            $arrProduct['price02_max_tax_format'] =& $arrProduct['price02_max_inctax_format'];
+            $arrProduct['price03_min_tax_format'] =& $arrProduct['price03_min_inctax_format'];
+            $arrProduct['price03_max_tax_format'] =& $arrProduct['price03_max_inctax_format'];
         }
+        
+        
         return $arrProducts;
     }
 
@@ -339,14 +378,21 @@ __EOS__;
      * @return void
      */
     static function setIncTaxToProduct(&$arrProduct) {
-        $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price01_min']) : null;
-        $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price01_max']) : null;
-        $arrProduct['price02_min_inctax'] = isset($arrProduct['price02_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price02_min']) : null;
-        $arrProduct['price02_max_inctax'] = isset($arrProduct['price02_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price02_max']) : null;
-/* CUORECUSTOM START */
-        $arrProduct['price03_min_inctax'] = isset($arrProduct['price03_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price03_min']) : null;
-        $arrProduct['price03_max_inctax'] = isset($arrProduct['price03_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price03_max']) : null;
-/* CUORECUSTOM END */
+//        $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price01_min']) : null;
+//        $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price01_max']) : null;
+//        $arrProduct['price02_min_inctax'] = isset($arrProduct['price02_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price02_min']) : null;
+//        $arrProduct['price02_max_inctax'] = isset($arrProduct['price02_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price02_max']) : null;
+///* CUORECUSTOM START */
+//        $arrProduct['price03_min_inctax'] = isset($arrProduct['price03_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price03_min']) : null;
+//        $arrProduct['price03_max_inctax'] = isset($arrProduct['price03_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price03_max']) : null;
+///* CUORECUSTOM END */
+        
+        $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price01_min'], $arrProduct['product_id']) : null;
+        $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price01_max'], $arrProduct['product_id']) : null;
+        $arrProduct['price02_min_inctax'] = isset($arrProduct['price02_min']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price02_min'], $arrProduct['product_id']) : null;
+        $arrProduct['price02_max_inctax'] = isset($arrProduct['price02_max']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price02_max'], $arrProduct['product_id']) : null;
+        $arrProduct['price03_min_inctax'] = isset($arrProduct['price03_min']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price03_min'], $arrProduct['product_id']) : null;
+        $arrProduct['price03_max_inctax'] = isset($arrProduct['price03_max']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price03_max'], $arrProduct['product_id']) : null;
     }
 
     /**

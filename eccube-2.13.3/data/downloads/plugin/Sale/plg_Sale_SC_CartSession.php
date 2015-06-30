@@ -84,6 +84,7 @@ class plg_Sale_SC_CartSession extends SC_CartSession {
 
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
                 $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
+                $this->cartSession[$productTypeId][$i]['price_inctax'] = $incTax;
                 $total = $incTax * $quantity;
 
                 $this->cartSession[$productTypeId][$i]['total_inctax'] = $total;

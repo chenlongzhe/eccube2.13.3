@@ -55,7 +55,8 @@ class plg_Sale_SC_Helper_Purchase extends SC_Helper_Purchase {
 /* CUORECUSTOM START */
         $arrItems['price'] = $arrItems['productsClass']['price03'];
 /* CUORECUSTOM END */
-        $inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItems['price']);
+        $inctax = SC_Helper_TaxRule_Ex::sfCalcIncTax($arrItems['price']);
+        $arrItems['price_inctax'] = $inctax;
         $arrItems['total_inctax'] = $inctax * $arrItems['quantity'];
     }
 }
